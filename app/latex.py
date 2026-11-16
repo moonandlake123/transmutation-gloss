@@ -1,3 +1,5 @@
+#本文件基于 TeXGlot 1.2.8 修改（2026-11-16，ForeverLight）
+
 """Lossless source-span translation. The model never gets to generate TeX syntax.
 
 This intentionally does not pretend to implement TeX's execution semantics.
