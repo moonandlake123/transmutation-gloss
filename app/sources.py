@@ -206,18 +206,18 @@ def extract_source(blob: bytes, name: str, root: Path):
             text = decode_tex(blob)
             if not re.search(r"\\(?:documentclass|documentstyle|begin|input)", text):
                 raise ValueError("文件不是有效的 LaTeX 源码")
-            (root / "main.tex").write_text(text, encoding="utf-8")
+            (root / "main.tex").write_text(text, encoding="utf-8",newline="\n")
     tex = list(root.rglob("*.tex"))
     if not tex:
         raise ValueError("压缩包中没有 .tex 文件")
     for file in tex:
-        file.write_text(decode_tex(file.read_bytes()), encoding="utf-8")
+        file.write_text(decode_tex(file.read_bytes()), encoding="utf-8",newline="\n")
 
 
 def decode_tex(blob: bytes) -> str:
     for encoding in ("utf-8-sig", "gb18030", "cp1252", "latin-1"):
         try:
-            return blob.decode(encoding)
+            return blob.decode(encoding).replace("\r\n", "\n").replace("\r", "\n")
         except UnicodeDecodeError:
             pass
     raise ValueError("无法识别源码编码")

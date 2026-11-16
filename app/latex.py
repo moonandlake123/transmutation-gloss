@@ -2228,11 +2228,14 @@ def segments(
                 p = i
                 while p < len(text) and text[p].isspace():
                     p += 1
-                i = (
-                    group_end(text, p)
-                    if p < len(text) and text[p] == "{"
-                    else min(p + 1, len(text))
-                )
+                if p < len(text) and text[p] == "\\":
+                    # A control sequence is never the accent's argument:
+                    # \=\kill and \=\hspace{...} must keep their backslash.
+                    pass
+                elif p < len(text) and text[p] == "{":
+                    i = group_end(text, p)
+                else:
+                    i = min(p + 1, len(text))
                 put(start, i, True)
             elif name == "twocolumn":
                 flush()
