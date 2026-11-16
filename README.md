@@ -1,9 +1,11 @@
 > ## ⚠️ 非官方版本 / Unofficial fork
 >
-> **本仓库是 [TeXGlot](https://github.com/Mengqi-Lei/texglot) 的非官方修改版（fork），
+> **本仓库是 [TeXGlot](https://github.com/Mengqi-Lei/texglot) 的非官方修改版，
 > 不是官方项目，也不受官方支持或认可。**
 
 ## transmutation-gloss
+
+采用了更保守的分词器,这可能会导致一部分文本不会被翻译
 
 ## Overview
 

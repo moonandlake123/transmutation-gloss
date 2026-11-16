@@ -1,30 +1,13 @@
-<p align="center">
-  <img src="frontend/src/assets/texglot-logo.png" width="88" alt="TeXGlot logo">
-</p>
-<h1 align="center">TeXGlot</h1>
-<p align="center"><strong>Read papers across languages. Keep the LaTeX.</strong></p>
-<p align="center">Local arXiv &amp; LaTeX translation · Your model API · PDF + editable source</p>
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-2563eb" alt="Apache 2.0"></a>
-  <a href="docs/platforms.en.md"><img src="https://img.shields.io/badge/macOS-tested-475569" alt="macOS tested"></a>
-  <a href="docs/platforms.en.md"><img src="https://img.shields.io/badge/Windows-x64-64748b" alt="Windows x64"></a>
-  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Python-3.11+-3776ab" alt="Python 3.11 or newer"></a>
-</p>
-<p align="center"><strong>English</strong> · <a href="README_CN.md">简体中文</a></p>
-<p align="center">
-  <a href="#news">News</a> · <a href="#quick-start">Quick start</a> · <a href="#example-attention-is-all-you-need">Example</a> · <a href="#command-line">CLI</a> · <a href="#zotero-plugin">Zotero plugin</a> · <a href="CONTRIBUTING.md">Contributing</a> · <a href="docs/releases/v1.2.8.md">Release notes</a>
-</p>
+> ## ⚠️ 非官方版本 / Unofficial fork
+>
+> **本仓库是 [TeXGlot](https://github.com/Mengqi-Lei/texglot) 的非官方修改版（fork），
+> 不是官方项目，也不受官方支持或认可。**
 
-https://github.com/user-attachments/assets/0f7d9dbb-3daf-412e-b3db-6f328421c396
-
-## News
-
-- **2026-09-25**: 🔥 TeXGlot for Zotero is released: start translations, reuse existing results and read both PDFs side by side inside Zotero. [Plugin guide](integrations/zotero/README.md)
-- **2026-09-10**: The first public TeXGlot release brings local arXiv / LaTeX translation, PDF comparison and a CLI.
+## transmutation-gloss
 
 ## Overview
 
-**TeXGlot** takes an arXiv link or a LaTeX project, translates its prose with your configured language model, and compiles a translated PDF. Equations, citations, figures and document structure are protected throughout the process. The translated LaTeX project remains available for editing.
+**transmutation-gloss** takes an arXiv link or a LaTeX project, translates its prose with your configured language model, and compiles a translated PDF. Equations, citations, figures and document structure are protected throughout the process. The translated LaTeX project remains available for editing.
 
 The name combines **TeX + Polyglot**. The browser interface and CLI use the same local library, queue and translation cache. No TeXGlot account or hosted backend is required. Model requests go to the API endpoint you choose.
 
@@ -94,7 +77,7 @@ No WSL is required. For source installations, prefer a short folder such as `D:\
 
 ### 2. Connect a translation service
 
-Open **TeXGlot** (or **http://127.0.0.1:8765** for a source installation), choose **Translation settings**, select a provider, enter its API base URL, model and key, then **Test connection** and save.
+Open **transmutation-gloss** (or **http://127.0.0.1:8765** for a source installation), choose **Translation settings**, select a provider, enter its API base URL, model and key, then **Test connection** and save.
 
 | Provider | Model preset | API base URL |
 | :--- | :--- | :--- |
