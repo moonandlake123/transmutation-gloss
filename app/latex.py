@@ -223,6 +223,10 @@ TEXT_AFTER_ARGS = {
     "rotatebox": 1,
     "raisebox": 1,
 }
+# Boxes whose content is literal code when it opens with a typewriter switch.
+# A missed translation is cheaper than a model rewriting \mbox{\tt let}.
+TYPEWRITER_WRAPPERS = {"mbox", "makebox", "hbox"}
+TYPEWRITER_START = re.compile(r"\s*\\(?:tt|ttfamily|mathtt|smalltt)(?![A-Za-z@])")
 
 
 @dataclass
@@ -617,6 +621,25 @@ def skip_tex_space(s: str, pos: int) -> int:
         else:
             break
     return pos
+
+
+def typewriter_group_end(s: str, pos: int) -> int:
+    """End of a brace group whose content opens with a typewriter switch.
+
+    ``\\mbox{\\tt let}``, ``\\mbox{\\tt Int}`` and ``{\\tt foo}`` are literal
+    code in practice.  Keeping them opaque costs a missed word at worst, while
+    exposing them lets a model rewrite language keywords inside code samples.
+    Returns 0 when the construct is not a typewriter group.
+    """
+    opening = skip_tex_space(s, pos)
+    if opening >= len(s) or s[opening] != "{":
+        return 0
+    end = group_end(s, opening)
+    if end <= opening + 1 or s[end - 1] != "}":
+        return 0
+    if TYPEWRITER_START.match(s, opening + 1):
+        return end
+    return 0
 
 
 def args_end(s: str, pos: int, required: int | None = None) -> int:
@@ -2007,6 +2030,17 @@ def segments(
                 if environment and environment[2] not in OPAQUE_ENV:
                     # Theorem/proof/list aliases are structural, not mathematics.
                     flush()
+                    if environment[1] == "begin":
+                        # An environment opened through a macro keeps its
+                        # mandatory arguments (tabular/array preambles, list
+                        # labels) out of prose, exactly like \begin{tabular}.
+                        i = args_end(
+                            text,
+                            i,
+                            required=0
+                            if environment[2] in text_environments
+                            else ENVIRONMENT_ARGS.get(environment[2]),
+                        )
                     continue
             if (
                 in_body
@@ -2149,6 +2183,13 @@ def segments(
             elif name == "texttt" or literal_code and name in CODE_ARGUMENT_COMMANDS:
                 i = args_end(text, i, required=1)
                 put(start, i, True)
+            elif name in TYPEWRITER_WRAPPERS and (
+                end := typewriter_group_end(text, i)
+            ):
+                # \mbox{\tt let} marks literal code even though it is not
+                # \texttt: the model must not rewrite the words inside.
+                i = end
+                put(start, i, True)
             elif name in argument_roles:
                 count, prose_positions = argument_roles[name]
                 cursor, arguments = i, []
@@ -2275,6 +2316,10 @@ def segments(
         if c == "$":
             delim = "$$" if text.startswith("$$", i) else "$"
             i = math_end(text, i + len(delim), delim, aliases)
+            put(start, i, True)
+        elif c == "{" and (end := typewriter_group_end(text, i)):
+            # A typewriter-switch group is literal code, not prose.
+            i = end
             put(start, i, True)
         elif c in "{}[]&#_^~":
             i += 1

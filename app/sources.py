@@ -1,3 +1,5 @@
+#本文件基于 TeXGlot 1.2.8 修改（2026-11-16，ForeverLight）
+
 from __future__ import annotations
 
 import asyncio
