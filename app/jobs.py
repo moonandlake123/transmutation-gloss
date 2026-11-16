@@ -65,7 +65,7 @@ from .translation import Translator, cache_settings, normalize_cached_translatio
 JOBS = DATA / "jobs"
 JOBS.mkdir(exist_ok=True)
 ACTIVE = {"queued", "downloading", "preparing", "translating", "compiling"}
-SOURCE_PREPARATION_VERSION = "native-source-v7"
+SOURCE_PREPARATION_VERSION = "native-source-v8"
 TITLE_METADATA_VERSION = 3
 
 
